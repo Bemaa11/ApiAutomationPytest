@@ -1,0 +1,37 @@
+name: Run test with ci/cd
+
+on:
+  pull_request:
+    branches:
+    - main
+  push:
+    branches:
+    - main
+
+jobs:
+  run_api_automation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: 
+          python -m pip install --upgrade pip
+          pip install -r requirments.txt
+
+      - name: Run test with pytest
+        run: pytest test/ -v
+        env:
+          WEBHOOK_SLACK: ${{ secretss.WEBHOOK_SLACK }}
+          TOKEN_QASE_IO: ${{ secretss.TOKEN_QASE_IO }}
+
+      - name: Send Report Slack
+        run: python setting/slack_notification.py
+        env:
+          WEBHOOK_SLACK: ${{ secretss.WEBHOOK_SLACK }}
+
