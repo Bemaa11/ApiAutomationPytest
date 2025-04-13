@@ -1,16 +1,15 @@
 name: Run test with ci/cd
 
 on:
-    pull reequest:
+ pull reequest:
      branches:
       - main
-    push:
+ push:
      branches:
       - main
-jobs:
-    run_api_automation:
+ run_api_automation:
      runs-on: ubuntu-latest
-    steps:
+      steps:
      - uses: actions/checkout@v3
 
      - name: Set up python
